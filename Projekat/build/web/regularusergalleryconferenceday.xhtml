@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:of="http://omnifaces.org/functions"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">  
+
+    <body>
+
+        <ui:composition template="./templates/masterLayout.xhtml">
+
+            <ui:define name="content">
+                <h:form>
+                    <div align="center">
+                      <div align="left"><p:commandLink value="previous page" action="conferencegallerypage" ajax="false"/></div>
+                      <div align="left"><p:commandLink value="main page" action="#{controler.gotoMainPageFromMyAgenda()}" ajax="false"/></div>    
+                      <div align="left"><p:commandLink value="Logout" action="#{controler.LogOut()}" ajax="false"/></div> 
+                
+                      <div align="center">Day #{controler.conferencedaynum}</div>
+                     
+                        <p:galleria value="#{controler.sessionDayGalleryImages}" var="img" panelWidth="500" panelHeight="313" showCaption="false">
+                            <o:graphicImage value="#{img.image}" dataURI="true" />
+                        </p:galleria>
+                      
+                      <p:dataTable var="d" value="#{controler.sessionDaySessions}" >
+                        
+                        <p:column headerText="Sessions">
+                            <div align="center"><p:commandLink value="Session #{d.name}" action="#{controler.openGalleryForSession(d)}" ajax="false"/></div>
+                        </p:column>
+                          
+                      </p:dataTable>
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

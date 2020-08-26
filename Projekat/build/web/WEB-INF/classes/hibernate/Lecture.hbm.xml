@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 6, 2017 9:30:03 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibernate.Lecture" table="lecture" catalog="projekat" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="sessions" class="hibernate.Sessions" fetch="select">
+            <column name="session" not-null="true" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="name" length="50" not-null="true" />
+        </property>
+        <property name="startTime" type="time">
+            <column name="start_time" length="8" not-null="true" />
+        </property>
+        <property name="endTime" type="time">
+            <column name="end_time" length="8" not-null="true" />
+        </property>
+        <set name="lecturegrades" table="lecturegrade" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idlecture" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.Lecturegrade" />
+        </set>
+        <set name="authors" table="author" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="lectureid" />
+            </key>
+            <one-to-many class="hibernate.Author" />
+        </set>
+    </class>
+</hibernate-mapping>

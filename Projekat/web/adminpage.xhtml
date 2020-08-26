@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./templates/masterLayout.xhtml">
+
+            <ui:define name="content">
+                <h:form id="form" prependId="true">
+                    <div align="center">
+                        
+                        <p:commandLink action="#{controler.AdminAddConferenceSetRendered()}" ajax="false">Add new conference</p:commandLink>
+                        <br/><br/><p:commandLink action="#{controler.AdminDeleteConferenceSetRendered()}" ajax="false">Cancel conference</p:commandLink>
+                        
+                        <br/><br/><p:commandButton value="Logout" action="#{controler.LogOut()}" icon="fa fa-sign-out" immediate="true"/>   
+                
+                        <br/><br/>
+                        
+                        <span style="color:red">#{controler.adminmodemessage}</span>
+                        <p:panelGrid columns="2" rendered="#{controler.adminaddconferencerendered}">
+                       <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">Add new conference:</p:column>
+                        </p:row>
+                       </f:facet>  
+                        Conference name: 
+                        <p:inputText value="#{controler.adminAddConferenceName}" required="#{param['form:closeaddcong']==null}" />
+                         City:
+                         <p:selectOneMenu value="#{controler.adminAddConferenceCity}" id="onemenu" required="#{param['form:closeaddcong']==null}">
+                             <f:selectItem itemLabel="Select One" itemValue="" />
+                             <f:selectItems value="#{controler.adminAddConferenceCitylist}" />
+                             <f:ajax listener="#{controler.RefreshLocationsInAddConference()}" render="insertmenu"  execute="onemenu"  />
+                         </p:selectOneMenu>
+                        Location:
+                        <p:selectOneMenu value="#{controler.adminAddConferenceLocation}" id="insertmenu" required="#{param['form:closeaddcong']==null}">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{controler.adminAddConferenceLocationlist}" />
+                        </p:selectOneMenu>
+                        Field:
+                        <p:selectOneMenu value="#{controler.adminAddConferenceField}" required="#{param['form:closeaddcong']==null}">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="elektrotehnika i racunarsko inzenjerstvo" itemValue="elektrotehnika i racunarsko inzenjerstvo" />
+                            <f:selectItem itemLabel="arhitektura" itemValue="arhitektura" />
+                            <f:selectItem itemLabel="gradjevina i geodezija" itemValue="gradjevina i geodezija" />
+                            <f:selectItem itemLabel="masinstvo i industrijsko inzenjerstvo" itemValue="masinstvo i industrijsko inzenjerstvo" />
+                            <f:selectItem itemLabel="medicina" itemValue="medicina" />
+                            <f:selectItem itemLabel="fizicko-hemijske nauke" itemValue="fizicko-hemijske nauke" />
+                            <f:selectItem itemLabel="bioloske nauke" itemValue="bioloske nauke" />
+                            <f:selectItem itemLabel="zastita zivotne sredine" itemValue="zastita zivotne sredine" />
+                        </p:selectOneMenu>
+                        Begin date: <p:calendar value="#{controler.adminAddConferenceDateBegin}" effect="fold" required="#{param['form:closeaddcong']==null}" />
+                        End date:<p:calendar value="#{controler.adminAddConferenceDateEnd}" effect="fold" required="#{param['form:closeaddcong']==null}" />
+                        Moderators:
+                        <p:selectManyMenu value="#{controler.moderators}">
+                            <f:selectItems value="#{controler.adminAddConferenceUsernamelist}" />
+                        </p:selectManyMenu>
+                        
+                        <f:facet name="footer">
+                        <p:row>
+                        <p:column > 
+                            <div align="center"><p:commandButton id="addconf" value="Add" action="#{controler.AdminModeAddConference()}" ajax="false" icon="fa fa-plus"/></div>
+                            <div align="center"><p:commandLink id="closeaddcong" value="close" action="#{controler.AdminModeCloseAddConferenceTable()}" ajax="false" /></div>
+                        </p:column>
+                        </p:row>       
+                        </f:facet> 
+                        </p:panelGrid>
+                        
+                        
+                        <div align="right"><p:commandLink value="close" action="#{controler.AdminModeCloseDeleteAllConferenceTable()}" ajax="false" rendered="#{controler.admindeleteconferencerendered}" /></div>
+                        <p:dataTable var="d" value="#{controler.adminDeleteConferenceAlllist}" rendered="#{controler.admindeleteconferencerendered}">
+                        
+                        <p:column headerText="Name">
+                            <h:outputText value="#{d.name}" />
+                        </p:column>
+                        
+                        <p:column headerText="Field">
+                            <h:outputText value="#{d.field}" />
+                        </p:column>
+                        
+                        <p:column headerText="Begin date">
+                            <h:outputText value="#{d.beginDate}" />
+                        </p:column>
+                        
+                        <p:column headerText="End date">
+                            <h:outputText value="#{d.endDate}" />
+                        </p:column>
+                        
+                        <p:column headerText="Country">
+                            <h:outputText value="#{d.country}" />
+                        </p:column> 
+                       
+                        <p:column headerText="City">
+                            <h:outputText value="#{d.city}" /> 
+                        </p:column>
+                       
+                        <p:column headerText="Place">
+                            <h:outputText value="#{d.place}" />
+                        </p:column>
+                        
+                        <p:column headerText="Street">
+                            <h:outputText value="#{d.street}" />
+                        </p:column> 
+                        
+                        <p:column headerText="Cancel conference">
+                            <p:commandButton  value="Cancel this conference" action="#{controler.adminModeCancelThisConference(d)}" ajax="false" icon="fa fa-close"/>
+                        </p:column>
+                      
+                        </p:dataTable>
+                       
+                        
+                        
+                        
+                        
+                    </div>
+                </h:form>
+                
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:of="http://omnifaces.org/functions"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <body>
+
+        <ui:composition template="./templates/masterLayout.xhtml">
+
+            <ui:define name="content">
+                <h:form enctype="multipart/form-data">
+                    <div align="center">
+                      <div align="left"><p:commandLink value="previous page" action="#{controler.gotoPreviousPageFromMyAgenda()}" ajax="false"/></div>  
+                      <div align="left"><p:commandLink value="main page" action="#{controler.gotoMainPageFromMyAgenda()}" ajax="false"/></div>  
+                      <div align="left"><p:commandLink value="Logout" action="#{controler.LogOut()}" ajax="false"/></div>
+                        
+                      <div align="center">Conference visitors</div>
+                            
+                      <p:dataTable var="d" value="#{controler.conferencevisitorslist}" >
+                        
+                        <p:column headerText="Username">
+                            <h:outputText value="#{d.username}" />
+                        </p:column>
+                        
+                        <p:column headerText="Option">
+                            <div align="center"><p:commandLink action="#{controler.ViewConferenceVisitorProfile(d)}" ajax="false" >View profile</p:commandLink></div>  
+                            <div align="center"><p:commandLink action="#{controler.SendMessageRender(d)}" ajax="false" >Send message</p:commandLink></div>  
+                        
+                        </p:column>
+                       
+                        </p:dataTable>
+                        
+                      <br/><span style="color:red">#{controler.conferencevisitorsString}</span>
+                      <br/><div align="center"><p:commandLink value="close" action="#{controler.ViewConferenceVisitorProfileClose()}" ajax="false" rendered="#{controler.conferencevisitorprofilerender}" /></div>
+                      <p:panelGrid columns="2" rendered="#{controler.conferencevisitorprofilerender}">
+                        
+                       <f:facet name="header">
+                        <o:graphicImage value="#{controler.conferencevisitorprofile.profilePicture}" dataURI="true"/>
+                       </f:facet>
+   
+                          <p:outputLabel value="Name:" />
+                          <p:outputLabel value="#{controler.conferencevisitorprofile.name}" />
+ 
+                        <h:outputText value="Surname:" />
+                        <h:outputText value="#{controler.conferencevisitorprofile.surname}" />
+                        
+                        <h:outputText value="Email:" />
+                        <h:outputText value="#{controler.conferencevisitorprofile.email}" />
+ 
+                        <h:outputText value="Instution:" />
+                        <h:outputText value="#{controler.conferencevisitorprofile.institution}" />   
+                        
+                        <h:outputText value="LinkedIn profile:" />
+                        <h:outputText value="#{controler.conferencevisitorprofile.linkedin}" />
+ 
+                        <h:outputText value="Shift size:" />
+                        <h:outputText value="#{controler.conferencevisitorprofile.shirtSize}" />
+                        <f:facet name="footer">
+                        <p:row>
+                        <p:column colspan="2"> 
+                            <div align="center"><p:commandButton value="Add to favourites" action="#{controler.AddToFavouritesUser(controler.conferencevisitorprofile.username)}" ajax="false" icon="fa fa-user-plus" /></div>
+                        </p:column>
+                        </p:row>       
+                        </f:facet>        
+                        </p:panelGrid>
+  
+                      
+                      
+                <p:panelGrid columns="2" rendered="#{controler.conferencevisitorSendMessagerender}">
+                <f:facet name="header">
+                    <p:row>
+                    <p:column colspan="2">New message</p:column>
+                    </p:row>
+                    </f:facet>
+                    Receiver:
+                    <div align="center"><p:outputLabel value="#{controler.conferencevisitorMessageReceiver.username}" /></div>
+                    Content:
+                    <p:inputTextarea value="#{controler.conferencevisitorMessageContent}"/>
+                    <f:facet name="footer">
+                <p:row>
+                    <p:column colspan="2"> 
+                        <div align="center"><p:commandButton value="Send" action="#{controler.ConferenceVisitorSendMessage()}" ajax="false" icon="fa fa-send" /></div>
+                       <div align="center"><p:commandLink value="close" action="#{controler.SendMessageCloseRender()}" ajax="false"  />  </div>  
+                    </p:column>
+                </p:row>       
+                </f:facet>
+                
+                </p:panelGrid>
+                         
+                      
+                      
+                      
+                      
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+ 
+    <body>
+
+        <ui:composition template="/templates/masterLayout.xhtml">
+
+            <ui:define name="content">
+              
+                <div align="center">  
+                    <h:form>
+                     
+                        <span style="font-family: serif; font-size: xx-large; color: #b32400; font-weight: bold">
+                            It’s useful and always will be.     
+                        </span>   
+                        
+                        
+                        
+                       <br/><br/><br/><br/> 
+                     <span style="color:red">#{controler.poruka}</span>    
+              
+                     <p:panelGrid columns="2">
+                    <f:facet name="header">
+                    <p:row>
+            <p:column colspan="2">Welcome</p:column>
+                    </p:row>
+                    </f:facet>    
+                Username:
+                <p:inputText value="#{controler.username}"/>
+                Password:
+                <p:password value="#{controler.password}"/>   
+                <f:facet name="footer">
+                <p:row>
+                    <p:column colspan="2"> 
+                        <div align="center"><p:commandButton value="Login" action="#{controler.LogIn()}" ajax="false" icon="fa fa-sign-in"/></div>
+                 </p:column>
+                </p:row>       
+                </f:facet>
+                </p:panelGrid>
+                    
+                     <br/><p:commandLink value="Change password" action="changepassword" ajax="false"/>
+                    <br/> 
+                    
+                    No account? <p:commandLink value="Sign up" action="signinpage" ajax="false"/>
+                    <br/>
+                    Proceed as Guest: 
+                    <p:commandLink value="Guest mode" action="guestmode" ajax="false"/>
+                   
+                    <br/><br/><br/><br/>
+                    
+                    <i class="fa fa-newspaper-o" aria-hidden="true" style=" font-size: 50px; color: #4d79c1;"><h:outputText value="&#160;" /><span style="font-family: serif; font-size: 30px; color: #b32400; font-weight: bold">See photos and updates</span></i>
+                   <br/><br/><i class="fa fa-briefcase" aria-hidden="true" style=" font-size: 50px; color: #4d79c1;"><h:outputText value="&#160;" /><span style="font-family: serif; font-size: 30px; color: #b32400; font-weight: bold">Explore the world of conferences</span></i>
+                    <br/><br/><i class="fa fa-envelope-square" aria-hidden="true" style=" font-size: 50px; color: #4d79c1;"><h:outputText value="&#160;" /><span style="font-family: serif; font-size: 30px; color: #b32400; font-weight: bold">Stay in touch with friends</span></i>
+                    </h:form>
+                    
+                    
+                </div>
+                
+            </ui:define>
+
+            
+        </ui:composition>
+
+    </body>
+</html>

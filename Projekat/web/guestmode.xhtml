@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./templates/masterLayout.xhtml">
+
+            <ui:define name="content">
+                <h:form>
+                    <div align="center">
+                        <p:panelGrid columns="2">
+                       <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">Search conferences by name/date:</p:column>
+                        </p:row>
+                       </f:facet>  
+                        Conference name: 
+                       <p:inputText value="#{controler.searchName}" />
+                        Begin date: <p:calendar value="#{controler.searchDateBegin}" effect="fold" />
+                        End date:<p:calendar value="#{controler.searchDateEnd}" effect="fold" />
+                        <f:facet name="footer">
+                        <p:row>
+                        <p:column colspan="2"> 
+                            <div align="center"><p:commandButton value="Search" action="#{controler.SearchGuestMode()}" ajax="false" icon="fa fa-search"/></div>
+                        </p:column>
+                        </p:row>       
+                        </f:facet> 
+                        
+                    </p:panelGrid>
+                    <br/><br/>
+                    <p:commandLink  action="#{controler.SearchGuestModeTodayConferences()}" ajax="false">Today conferences</p:commandLink> <h:outputText value="&#160;" /><h:outputText value="&#160;" /><h:outputText value="&#160;" />
+                    <p:commandLink  action="#{controler.SearchGuestModeMonthsConferences()}" ajax="false">This month conferences</p:commandLink>
+                    <br/><br/>
+                    <p:commandButton value="Logout" action="#{controler.LogOut()}" icon="fa fa-sign-out"/>
+                    <br/><br/>
+                   
+                    
+                    <p:dataTable var="d" value="#{controler.guestsearchlist}" rendered="#{controler.guestmodesearchrendered}">
+                        
+                        <p:column headerText="Name">
+                            <div align="center"><h:outputText value="#{d.name}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Field">
+                            <div align="center"><h:outputText value="#{d.field}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Begin date">
+                            <div align="center"><h:outputText value="#{d.beginDate}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="End date">
+                            <div align="center"><h:outputText value="#{d.endDate}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Country">
+                            <div align="center"><h:outputText value="#{d.country}" /></div>
+                        </p:column> 
+                       
+                        <p:column headerText="City">
+                            <div align="center"><h:outputText value="#{d.city}" /></div>
+                        </p:column>
+                       
+                        <p:column headerText="Place">
+                            <div align="center"><h:outputText value="#{d.place}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Street">
+                            <div align="center"><h:outputText value="#{d.street}" /></div>
+                        </p:column> 
+                        
+                        <p:column headerText="Register your attendance ">
+                            <div align="center"><p:commandLink  action="#{controler.GuestModeRegistrationLink()}" ajax="false">Link</p:commandLink></div>
+                        </p:column>
+                        
+                    </p:dataTable>
+                 
+                        
+                    </div>
+                </h:form>
+                
+                
+                
+                
+                
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

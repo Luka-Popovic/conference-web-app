@@ -1,0 +1,220 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./templates/masterLayout.xhtml">
+
+            <ui:define name="content">
+                <h:form enctype="multipart/form-data">
+                    <div align="center">
+                        <div align="left"><p:commandLink value="previous page" action="moderatorpage" ajax="false" immediate="true"/></div>
+                        <div align="left"><p:commandLink value="Logout" action="#{controler.LogOut()}" ajax="false" immediate="true"/></div>
+                        
+                        <!-- Pregled sesija-->
+                        <br/><span style="color:red">#{controler.showSessionsMessage}</span>
+                        
+                        <br/><div align="center" ><p:outputLabel value="Conference" /></div>
+                        <p:dataTable var="d" value="#{controler.conferencetoshow}">
+                        
+                        <p:column headerText="Name">
+                           <div align="center"><h:outputText value="#{d.name}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Field">
+                            <div align="center"><h:outputText value="#{d.field}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Begin date">
+                            <div align="center"><h:outputText value="#{d.beginDate}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="End date">
+                            <div align="center"><h:outputText value="#{d.endDate}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Country">
+                            <div align="center"><h:outputText value="#{d.country}" /></div>
+                        </p:column> 
+                       
+                        <p:column headerText="City">
+                            <div align="center"><h:outputText value="#{d.city}" /></div>
+                        </p:column>
+                       
+                        <p:column headerText="Place">
+                            <div align="center"><h:outputText value="#{d.place}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Street">
+                            <div align="center"><h:outputText value="#{d.street}" /></div>
+                        </p:column> 
+                          
+                        </p:dataTable>
+                        
+                        
+                        
+                        <br/><div align="center" ><p:outputLabel value="Sessions" rendered="#{controler.moderatorpageviewconferenceprogramrender}"/></div>
+                        <p:dataTable id="tablemod"  var="d" value="#{controler.moderatorbeanconferencecontent.sessionhalllist}" rendered="#{controler.moderatorpageviewconferenceprogramrender}">
+                        
+                        <p:column headerText="Session name">
+                            <div align="center"><h:outputText value="#{d.session.name}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Date">
+                            <div align="center"><h:outputText value="#{d.session.date}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Begin time">
+                            <div align="center"><h:outputText value="#{d.session.beginTime}" /></div>
+                        </p:column>
+                            
+                        <p:column headerText="End time">
+                            <div align="center"><h:outputText value="#{d.session.endTime}" /></div>
+                        </p:column>
+                            
+                        <p:column headerText="Hall">
+                            <div align="center"><h:outputText value="#{d.hall}" /></div>
+                        </p:column>     
+                       
+                        <p:column headerText="Add lecture">
+                           <div align="center"><i class="fa fa-book" aria-hidden="true"><h:outputText value="&#160;" /><p:commandLink value="Add" action="#{controler.ModeratorPageAddSessionLectureRender(d)}" ajax="false" /></i></div>
+                        </p:column>
+                        
+                         <p:column headerText="Add image">
+                           <div align="center"><p:commandLink value="Add image" action="#{controler.ModeratorPageAddSessionImage(d)}" ajax="false" rendered="#{not d.addimagerendered}"/></div>
+                           <div align="center"><p:fileUpload value="#{controler.addSessionImageFile}" mode="simple" skinSimple="true" rendered="#{d.addimagerendered}"/></div>
+                           <div align="center"><p:commandLink value="Upload" action="#{controler.ModeratorPageAddSessionImageSave('s', d)}" ajax="false" rendered="#{d.addimagerendered}"/></div>
+                         </p:column>   
+                            
+                            
+                        </p:dataTable>
+                         
+                        <!-- Pregled radionica-->
+                        <br/><div align="center" ><p:outputLabel value="Workshops" rendered="#{controler.moderatorpageviewconferenceprogramrender}"/></div>
+                        <p:dataTable  var="d" value="#{controler.moderatorbeanconferencecontent.workshoplist}" rendered="#{controler.moderatorpageviewconferenceprogramrender}">
+                        <br/>
+                        <p:column headerText="Workshop topic">
+                            <div align="center"><h:outputText value="#{d.topic}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Date">
+                            <div align="center"><h:outputText value="#{d.date}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Begin time">
+                            <div align="center"><h:outputText value="#{d.beginTime}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="End time">
+                            <div align="center"><h:outputText value="#{d.endTime}" /></div>
+                        </p:column>     
+                       
+                        </p:dataTable>
+                        <br/>
+                        
+                        <!-- Pregled ceremonija otvaranja-->
+                        <div align="center" ><p:outputLabel value="Open ceremonies" rendered="#{controler.moderatorpageviewconferenceprogramrender}"/></div>
+                        <p:dataTable  var="d" value="#{controler.moderatorbeanconferencecontent.openceremonylist}" rendered="#{controler.moderatorpageviewconferenceprogramrender}">
+                        
+                       <p:column headerText="Open ceremony">
+                            <div align="center"><h:outputText value="#{d.type}" /></div>
+                        </p:column>           
+                            
+                       <p:column headerText="Date">
+                            <div align="center"><h:outputText value="#{d.date}" /></div>
+                       </p:column>    
+                            
+                        <p:column headerText="Begin time">
+                            <div align="center"><h:outputText value="#{d.beginTime}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="End time">
+                            <div align="center"><h:outputText value="#{d.endTime}" /></div>
+                        </p:column>     
+                            
+                        </p:dataTable>
+                        <br/>
+                        
+                        <!-- Pregled ceremonija zatvaranja-->
+                        <div align="center" ><p:outputLabel value="Close ceremonies" rendered="#{controler.moderatorpageviewconferenceprogramrender}"/></div>
+                        <p:dataTable  var="d" value="#{controler.moderatorbeanconferencecontent.closeceremonylist}" rendered="#{controler.moderatorpageviewconferenceprogramrender}">
+                        
+                        <p:column headerText="Close ceremony">
+                            <div align="center"><h:outputText value="#{d.type}" /></div>
+                        </p:column>      
+                        
+                        <p:column headerText="Date">
+                            <div align="center"><h:outputText value="#{d.date}" /></div>
+                        </p:column>
+                            
+                        <p:column headerText="Begin time">
+                            <div align="center"><h:outputText value="#{d.beginTime}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="End time">
+                            <div align="center"><h:outputText value="#{d.endTime}" /></div>
+                        </p:column>     
+                       
+                        </p:dataTable>
+                        
+                        <!--Dodavanje predavanja za sesiju-->
+                        <br/><br/><span style="color:red">#{controler.newlectureMessage}</span>
+                        <p:panelGrid columns="2" rendered="#{controler.moderatorpageAddSessionLecturerender}">
+                    <f:facet name="header">
+                    <p:row>
+                    <p:column colspan="2">New lecture</p:column>
+                    </p:row>
+                    </f:facet>    
+                Lecture name:
+                <p:inputText value="#{controler.newLectureName}" required="true" />
+                Begin time:
+                <p:calendar  value="#{controler.addLectureBeginTime}" pattern="HH:mm:ss" timeOnly="true" required="true" />
+                
+                End time:
+                <p:calendar value="#{controler.addLectureEndTime}" pattern="HH:mm:ss" timeOnly="true" required="true" />
+                
+                Entry lecture:
+                <p:selectBooleanCheckbox value="#{controler.newLectureCheckBox}"/>
+                
+                Select authors (max 4):
+                <p:selectManyMenu value="#{controler.newLectureAuthors}">
+                            <f:selectItems value="#{controler.addLectureAuthorList}" />
+                        </p:selectManyMenu>
+                Or add new authors:
+                <h:outputText value=""/>
+                <div align="right">#1</div>
+                <p:inputText value="#{controler.externalAuthor1}"/>
+                
+                <div align="right">#2</div>
+                <p:inputText value="#{controler.externalAuthor2}"/>
+                
+                <div align="right">#3</div>
+                <p:inputText value="#{controler.externalAuthor3}"/>
+                
+               <div align="right">#4</div>
+                <p:inputText value="#{controler.externalAuthor4}"/>
+                
+                <f:facet name="footer">
+                <p:row>
+                    <p:column colspan="2"> 
+                        <div align="center"><p:commandButton value="Add lecture" action="#{controler.ModeratorPageAddSessionLectureToDB()}" ajax="false"/>
+                            <br/><p:commandLink  action="#{controler.ModeratorPageAddSessionLectureCloseRender()}" ajax="false" immediate="true">close</p:commandLink>
+                        </div>
+                    </p:column>
+                </p:row>       
+                </f:facet>
+                </p:panelGrid>
+                        
+                    </div>
+                </h:form>        
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

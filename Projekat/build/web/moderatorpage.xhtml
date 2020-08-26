@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./templates/masterLayout.xhtml">
+
+            <ui:define name="content">
+                <h:form enctype="multipart/form-data">
+                    <div align="center">
+                        <div align="left"><p:commandLink value="previous page" action="moderatorwelcomepage" ajax="false"/></div>
+                        <div align="left"><p:commandLink value="Logout" action="#{controler.LogOut()}" ajax="false"/></div>
+                        <!-- Pregled konferencija-->
+                         <!--<div align="right"><p:commandLink value="close" action="#{controler.AdminModeCloseDeleteAllConferenceTable()}" ajax="false" rendered="#{controler.admindeleteconferencerendered}" /></div> -->
+                        <p:dataTable var="d" value="#{controler.moderatorbeanlist}">
+                        
+                        <p:column headerText="Name">
+                           <div align="center"><h:outputText value="#{d.name}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Field">
+                            <div align="center"><h:outputText value="#{d.field}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Begin date">
+                            <div align="center"><h:outputText value="#{d.beginDate}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="End date">
+                            <div align="center"><h:outputText value="#{d.endDate}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Country">
+                            <div align="center"><h:outputText value="#{d.country}" /></div>
+                        </p:column> 
+                       
+                        <p:column headerText="City">
+                            <div align="center"><h:outputText value="#{d.city}" /></div>
+                        </p:column>
+                       
+                        <p:column headerText="Place">
+                            <div align="center"><h:outputText value="#{d.place}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Street">
+                            <div align="center"><h:outputText value="#{d.street}" /></div>
+                        </p:column> 
+                         
+                        <p:column headerText="View conference program">
+                            <div align="center">
+                            <i class="fa fa-list-alt" aria-hidden="true"><h:outputText value="&#160;" /><p:commandLink  id="button" value="View" action="#{controler.ModeratorPageViewConferenceProgram(d)}" ajax="false">
+                            <f:ajax event="click"  render="tablemod"  execute="button"  />
+                            </p:commandLink>
+                            </i>
+                            </div>
+                        </p:column>
+                      
+                        <p:column headerText="Add events">
+                            <div align="center">
+                            <p:commandLink  id="button1" value="Add session" action="#{controler.ModeratorPageAddSession(d.agenda, d.country, d.city, d.place, d.street, d)}" ajax="false">
+                            <f:ajax event="click"  render="sessionmod"  execute="button1"  />
+                            </p:commandLink>                                               
+                            </div>
+                            
+                            <div align="center">
+                            <p:commandLink  id="button2" value="Add workshop" action="#{controler.ModeratorPageAddWorkshopRender(d.agenda, d)}" ajax="false">
+                            <f:ajax event="click"  render="workshopmod"  execute="button2"  />
+                            </p:commandLink>                                               
+                            </div>
+                            
+                            <div align="center">
+                            <p:commandLink  id="button3" value="Add open ceremony" action="#{controler.ModeratorPageAddOpenCeremonyRender(d.agenda, d)}" ajax="false">
+                            <f:ajax event="click"  render="openceremonymod"  execute="button3"  />
+                            </p:commandLink>
+                            </div>
+                                
+                            <div align="center">
+                            <p:commandLink  id="button4" value="Add close ceremony" action="#{controler.ModeratorPageAddCloseCeremonyRender(d.agenda, d)}" ajax="false">
+                            <f:ajax event="click"  render="closeceremonymod"  execute="button4"  />
+                            </p:commandLink>
+                            </div>
+                                
+                            <div align="center">
+                            <p:commandLink  id="button5" value="Add image" action="#{controler.ModeratorPageAddConferenceImagesRender(d.agenda)}" ajax="false">
+                            <f:ajax event="click"  render="addimagesmod"  execute="button5"  />
+                            </p:commandLink>
+                            </div>
+                                
+                        </p:column>    
+                        </p:dataTable>
+                          
+                  <!--Dodavanje slika za ceremonije i za dane ceremonija-->
+             <span style="color:red">#{controler.moderatorAddConferenceImagesMessage}</span>
+                        <p:panelGrid columns="2" id="addimagesmod" rendered="#{controler.moderatorpageAddConferenceImagesrender}">
+                    <f:facet name="header">
+                    <p:row>
+            <p:column colspan="2">Add image</p:column>
+                    </p:row>
+                    </f:facet>    
+                            
+                Add image to conference folder:
+                <p:selectBooleanCheckbox value="#{controler.addConferenceImageCheckBox}" />
+                
+                Add image to conference day:
+                <p:selectOneMenu value="#{controler.moderatorAddConferenceImagesDay}" >
+                            <f:selectItem itemLabel="Select One Day" itemValue="-1" />
+                            <f:selectItems value="#{controler.moderatorAddConferenceImagesDayList}"/>
+                        </p:selectOneMenu>
+                
+                 Choose image:
+                 <p:fileUpload value="#{controler.addConferenceImageFile}" mode="simple" skinSimple="true" />
+
+                
+                
+                <f:facet name="footer">
+                <p:row>
+                    <p:column colspan="2"> 
+                        <div align="center"><p:commandButton value="Add image to gallery" action="#{controler.ModeratorPageAddConferenceImagesToDB('non')}" ajax="false"/>
+                        <br/><p:commandLink  action="#{controler.ModeratorPageAddConferenceImagesCloseRender()}" ajax="false">close</p:commandLink>
+                        </div>
+                    </p:column>
+                </p:row>       
+                </f:facet>
+                </p:panelGrid>
+             
+                        
+                    </div>
+                </h:form>
+                
+                
+                
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

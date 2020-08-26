@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+    
+        <ui:composition template="./templates/masterLayout.xhtml">
+
+            <ui:define name="content">
+                <h:form enctype="multipart/form-data">
+                    <div align="center">
+                        <div align="left"><p:commandLink value="previous page" action="regularuserpage" ajax="false"/></div>
+                         <div align="left"><p:commandLink value="Logout" action="#{controler.LogOut()}" ajax="false"/></div>
+                        <p:dataTable  id="myconferenceslist1" var="d" value="#{controler.regularUserMyConferencesList}" >
+                        
+                        <p:column headerText="Name">
+                            <div align="center"><h:outputText value="#{d.name}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Field">
+                            <div align="center"><h:outputText value="#{d.field}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Begin date">
+                            <div align="center"><h:outputText value="#{d.beginDate}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="End date">
+                            <div align="center"><h:outputText value="#{d.endDate}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Country">
+                            <div align="center"><h:outputText value="#{d.country}" /></div>
+                        </p:column> 
+                       
+                        <p:column headerText="City">
+                            <div align="center"><h:outputText value="#{d.city}" /></div>
+                        </p:column>
+                       
+                        <p:column headerText="Place">
+                            <div align="center"><h:outputText value="#{d.place}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Street">
+                            <div align="center"><h:outputText value="#{d.street}" /></div>
+                        </p:column>
+                            
+                       <p:column headerText="Options">
+                           <div align="center"><i class="fa fa-files-o" aria-hidden="true"><h:outputText value="&#160;" /><p:commandLink value="Conference Agenda" action="#{controler.RegularUserMyConferencesAgendaRender(d)}" ajax="false" /></i></div>
+                           <hr/><div align="center"><i class="fa fa-file" aria-hidden="true"><h:outputText value="&#160;" /><p:commandLink value="My Agenda" action="#{controler.RegularUserMyAgendaUserView(d)}" ajax="false" /></i></div>
+                           <hr/><div align="center"><i class="fa fa-image" aria-hidden="true"><h:outputText value="&#160;" /><p:commandLink value="Gallery" action="#{controler.ConferenceGallery(d.conferenceid, d.beginDate, d.endDate)}" ajax="false" /></i></div>
+                           <hr/><div align="center"><i class="fa fa-users" aria-hidden="true"><h:outputText value="&#160;" /><p:commandLink value="Conference visitors" action="#{controler.RegularUserConferenceVisitorsView(d.conferenceid)}" ajax="false" /></i></div>
+                           <hr/><div align="center"><i class="fa fa-download" aria-hidden="true"><h:outputText value="&#160;" /><p:commandLink value="Download files" action="#{controler.DownloadConferenceFiles(d.conferenceid)}" ajax="false" /></i></div>
+                           <hr/><div align="center">
+                               <i class="fa fa-twitter" aria-hidden="true">
+                               <p:commandLink value="Share on Twitter" action="#{controler.TwitterEvent(d)}" ajax="false" />
+                               </i><br/>
+                          <iframe src="https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Flocalhost%3A8080%2FProjekat%2Ffaces%2Fregularuserpage.xhtml&layout;=button_count&size;=small&mobile_iframe;=true&width;=69&height;=20&appId;" width="69" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>    
+                           </div>
+                       </p:column>
+                    </p:dataTable>
+                        
+                        
+                       
+                        
+                    </div>
+                </h:form>
+                
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+
+</html>

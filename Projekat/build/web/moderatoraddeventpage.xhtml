@@ -1,0 +1,230 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./templates/masterLayout.xhtml">
+
+            <ui:define name="content">
+                
+                <h:form enctype="multipart/form-data">
+                    <div align="center">
+                        <div align="left"><p:commandLink value="previous page" action="#{controler.ModeratorPageAddSessionClosePanelGrid()}" ajax="false" immediate="true"/></div>
+                        <div align="left"><p:commandLink value="Logout" action="#{controler.LogOut()}" ajax="false" immediate="true"/></div>
+                        
+                        <br/><span style="color:red">#{controler.regularUserMyAgendamessage}</span>   
+                        <div align="center">Conference</div> 
+                        <p:dataTable var="d" value="#{controler.moderatorpageModeratorBeanSessionAdd}" >
+                        
+                       <p:column headerText="Session name">
+                           <h:outputText value="#{d.name}" />
+                       </p:column>
+                      
+                        <p:column headerText="Field">
+                            <h:outputText value="#{d.field}" />
+                        </p:column>
+                        
+                        <p:column headerText="Begin time">
+                            <div align="center"><h:outputText value="#{d.beginDate}" /></div>
+                        </p:column>
+                            
+                        <p:column headerText="End time">
+                            <div align="center"><h:outputText value="#{d.endDate}" /></div>
+                        </p:column>
+                            
+                        <p:column headerText="Country">
+                            <div align="center"><h:outputText value="#{d.country}" /></div>
+                        </p:column> 
+                       
+                        <p:column headerText="City">
+                            <div align="center"><h:outputText value="#{d.city}" /></div>
+                        </p:column>
+                       
+                        <p:column headerText="Place">
+                            <div align="center"><h:outputText value="#{d.place}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Street">
+                            <div align="center"><h:outputText value="#{d.street}" /></div>
+                        </p:column>    
+
+                        </p:dataTable>
+                        <br/>
+                        
+
+                         <!--Dodavanje nove sesije-->
+                        <span style="color:red">#{controler.newsessionMessage}</span>
+                        <p:panelGrid columns="2" id="sessionmod" rendered="#{controler.moderatorpageaddsessionrender}">
+                    <f:facet name="header">
+                    <p:row>
+            <p:column colspan="2">New session</p:column>
+                    </p:row>
+                    </f:facet>    
+                
+                 Session name:
+                 <p:inputText value="#{controler.newSessionAddName}" required="true"/>            
+                            
+                Hall:
+                <p:selectOneMenu value="#{controler.newsessionHall}" required="true">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{controler.newSessionHalllist}" />
+                        </p:selectOneMenu>
+                Date:
+                <p:calendar value="#{controler.newsessionDate}" effect="fold" required="true"/>
+                
+                Begin time:
+                <p:calendar id="time1" value="#{controler.newsessionBeginTime}" pattern="HH:mm:ss" timeOnly="true" required="true" />
+                
+                End time:
+                <p:calendar id="time2" value="#{controler.newsessionEndTime}" pattern="HH:mm:ss" timeOnly="true" required="true" />
+                
+                <f:facet name="footer">
+                <p:row>
+                    <p:column colspan="2"> 
+                        <div align="center"><p:commandButton value="Add session" action="#{controler.ModeratorPageAddSessionToDB()}" ajax="false"/>
+                            
+                        </div>
+                    </p:column>
+                </p:row>       
+                </f:facet>
+                </p:panelGrid>
+                        
+                   
+                    <!--Dodavanje nove radionice-->
+             <span style="color:red">#{controler.newWorkshopMessage}</span>
+                        <p:panelGrid columns="2" id="workshopmod" rendered="#{controler.moderatorpageAddWorkshoprender}">
+                    <f:facet name="header">
+                    <p:row>
+            <p:column colspan="2">New workshop</p:column>
+                    </p:row>
+                    </f:facet>    
+                Topic:
+                <p:inputText value="#{controler.newWorkshopTopic}" required="true"/>
+                
+                Date:
+                <p:calendar value="#{controler.newWorkshopDate}" effect="fold" required="true" />          
+                
+                Begin time:
+                <p:calendar value="#{controler.addWorkshopBeginTime}" pattern="HH:mm:ss" timeOnly="true" required="true" />
+                
+                End time:
+                <p:calendar value="#{controler.addWorkshopEndTime}" pattern="HH:mm:ss" timeOnly="true" required="true" />
+                
+                Select authors (max 4):
+                <p:selectManyMenu value="#{controler.newLectureAuthors}">
+                            <f:selectItems value="#{controler.addLectureAuthorList}" />
+                        </p:selectManyMenu>
+                Or add new authors:
+                <h:outputText value=""/>
+                <div align="right">#1</div>
+                <p:inputText value="#{controler.externalAuthor1}"/>
+                
+                <div align="right">#2</div>
+                <p:inputText value="#{controler.externalAuthor2}"/>
+                
+                <div align="right">#3</div>
+                <p:inputText value="#{controler.externalAuthor3}"/>
+                
+               <div align="right">#4</div>
+                <p:inputText value="#{controler.externalAuthor4}"/>
+                
+                
+                <f:facet name="footer">
+                <p:row>
+                    <p:column colspan="2"> 
+                        <div align="center"><p:commandButton value="Add workshop" action="#{controler.ModeratorPageAddWorkshopToDB()}" ajax="false"/>
+                       
+                        </div>
+                    </p:column>
+                </p:row>       
+                </f:facet>
+                </p:panelGrid>
+                        
+                      
+                <!--Dodavanje nove ceremonije otvaranja-->
+             <span style="color:red">#{controler.newOpenCeremonyMessage}</span>
+                        <p:panelGrid columns="2" id="openceremonymod" rendered="#{controler.moderatorpageOpenCeremonyrender}">
+                    <f:facet name="header">
+                    <p:row>
+            <p:column colspan="2">New open ceremony</p:column>
+                    </p:row>
+                    </f:facet>    
+                  
+                Date:
+                <p:calendar value="#{controler.newOpenCeremonyDate}" effect="fold" required="true" />           
+                
+                Begin time:
+                <p:calendar value="#{controler.addOpenCeremonyBeginTime}" pattern="HH:mm:ss" timeOnly="true" required="true" />
+                
+                End time:
+                <p:calendar value="#{controler.addOpenCeremonyEndTime}" pattern="HH:mm:ss" timeOnly="true" required="true" />
+                
+                Select type:
+                <p:selectOneMenu value="#{controler.openCeremonyType}" required="true">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Predavanje po pozivu" itemValue="Predavanje po pozivu" />
+                            <f:selectItem itemLabel="Pozdravni govor" itemValue="Pozdravni govor" />
+                        </p:selectOneMenu>
+                
+                <f:facet name="footer">
+                <p:row>
+                    <p:column colspan="2"> 
+                        <div align="center"><p:commandButton value="Add open ceremony" action="#{controler.ModeratorPageAddOpenCeremonyToDB()}" ajax="false"/>
+                        
+                        </div>
+                    </p:column>
+                </p:row>       
+                </f:facet>
+                </p:panelGrid>
+             
+             
+               <!--Dodavanje nove ceremonije zatvaranja-->
+             <span style="color:red">#{controler.newCloseCeremonyMessage}</span>
+                        <p:panelGrid columns="2" id="closeceremonymod" rendered="#{controler.moderatorpageCloseCeremonyrender}">
+                    <f:facet name="header">
+                    <p:row>
+            <p:column colspan="2">New close ceremony</p:column>
+                    </p:row>
+                    </f:facet>    
+                   
+                Date:
+                <p:calendar value="#{controler.newCloseCeremonyDate}" effect="fold" required="true" />           
+                
+                Begin time:
+                <p:calendar value="#{controler.addCloseCeremonyBeginTime}" pattern="HH:mm:ss" timeOnly="true" required="true" />
+                
+                End time:
+                <p:calendar value="#{controler.addCloseCeremonyEndTime}" pattern="HH:mm:ss" timeOnly="true" required="true" />
+                
+                Select type:
+                <p:selectOneMenu value="#{controler.closeCeremonyType}" required="true">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="Predavanje po pozivu" itemValue="Predavanje po pozivu" />
+                            <f:selectItem itemLabel="Pozdravni govor" itemValue="Pozdravni govor" />
+                        </p:selectOneMenu>
+                
+                <f:facet name="footer">
+                <p:row>
+                    <p:column colspan="2"> 
+                        <div align="center"><p:commandButton value="Add close ceremony" action="#{controler.ModeratorPageAddCloseCeremonyToDB()}" ajax="false"/>
+                        </div>
+                    </p:column>
+                </p:row>       
+                </f:facet>
+                </p:panelGrid> 
+             
+                    </div>
+                </h:form>
+                
+                
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

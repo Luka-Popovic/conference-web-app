@@ -1,0 +1,201 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./templates/masterLayout.xhtml">
+
+            <ui:define name="content">
+                 <h:form enctype="multipart/form-data">
+                    <div align="center">
+                      <div align="left"><p:commandLink value="previous page" action="#{controler.gotoPreviousPageFromMyAgenda()}" ajax="false"/></div>
+                      <div align="left"><p:commandLink value="main page" action="#{controler.gotoMainPageFromMyAgenda()}" ajax="false"/></div>  
+                      <div align="left"><p:commandLink value="Logout" action="#{controler.LogOut()}" ajax="false"/></div>
+                        
+                        <!-- Pregled sesija-->
+                        <br/><span style="color:red">#{controler.regularUserMyAgendamessage}</span>   
+                        <div align="center">Sessions</div> 
+                        <p:dataTable var="d" value="#{controler.regularUserMyAgendaList.sessionhalllist}" >
+                        
+                       <p:column headerText="Session name">
+                         <div align="center"><h:outputText value="#{d.session.name}" /></div>
+                       </p:column>
+                      
+                        <p:column headerText="Date">
+                            <div align="center"><h:outputText value="#{d.session.date}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Begin time">
+                            <div align="center"><h:outputText value="#{d.session.beginTime}" /></div>
+                        </p:column>
+                            
+                        <p:column headerText="End time">
+                            <div align="center"><h:outputText value="#{d.session.endTime}" /></div>
+                        </p:column>
+                            
+                        <p:column headerText="Hall">
+                            <div align="center"><h:outputText value="#{d.hall}" /></div>
+                        </p:column>     
+                       
+                        <p:column headerText="Option">
+                            <div align="center"><i class="fa fa-thumbs-o-up" aria-hidden="true"><h:outputText value="&#160;" /><p:commandLink action="#{controler.LikeThisEvent(d.getSession().getId(), d.getSession().getAgenda().getId(), 's')}" ajax="false" rendered="#{not controler.leavecommentrender}" >Like</p:commandLink></i></div>  
+                            <div align="center"><i class="fa fa-comment-o" aria-hidden="true"><h:outputText value="&#160;" /><p:commandLink action="#{controler.LeaveCommentRender(d, null)}" ajax="false" rendered="#{not d.rendered}">Leave comment</p:commandLink></i></div>
+                            <div align="center"><p:commandLink  action="#{controler.LeaveCommentToEvent(d.getSession().getId(), d.getSession().getAgenda().getId(), 's', d, null)}" ajax="false" rendered="#{d.rendered}">Enter</p:commandLink></div>
+                            <div align="center"><p:inputText value="#{controler.myagendacomment}" rendered="#{d.rendered}"/></div>
+                        
+                            <div align="center"><i class="fa fa-camera" aria-hidden="true"><h:outputText value="&#160;" /><p:commandLink value="Add image" action="#{controler.RegularUserAddSessionImage(d)}" ajax="false" rendered="#{not d.imgsessionrendered}"/></i></div>
+                            <div align="center"><p:fileUpload value="#{controler.addSessionImageFile}" mode="simple" skinSimple="true" rendered="#{d.imgsessionrendered}"/></div>
+                            <div align="center"><p:commandLink value="Upload" action="#{controler.RegularUserAddSessionImageSave('s', d)}" ajax="false" rendered="#{d.imgsessionrendered}"/></div>
+                        </p:column>
+                       
+                        </p:dataTable>
+                        <br/>
+                            
+                        <!-- Pregled predavanja-->
+                        <div align="center">Lectures</div>   
+                        <p:dataTable  var="d" value="#{controler.regularUserMyAgendaList.lab}" >
+                        <br/>
+                        <p:column headerText="Lecture name">
+                            <div align="center"><h:outputText value="#{d.lecture.name}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Begin time">
+                            <div align="center"><h:outputText value="#{d.lecture.startTime}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="End time">
+                            <div align="center"><h:outputText value="#{d.lecture.endTime}" /></div>
+                        </p:column>     
+                       
+                        <p:column headerText="Authors">
+                            <p:dataTable var="c" value="#{d.authorlist}" >
+                            <p:column>
+                                
+                                <span style="color:#{c.presenting gt 0?'blue':'black'}">
+                                <div align="center">
+                                <h:outputText value="#{c.username}" />
+                                </div>
+                                </span>
+                            </p:column>     
+                            </p:dataTable>
+                        </p:column>     
+                        fa-list-ol
+                        <p:column headerText="Option">                    
+                            <div align="center"><i class="fa fa-list-ol" aria-hidden="true"><h:outputText value="&#160;" /><p:commandLink action="#{controler.LeaveGradeRender(d.lecture)}" ajax="false" rendered="#{not d.lecture.rendered}">Leave grade</p:commandLink></i></div>
+                            <div align="center"><p:commandLink  action="#{controler.LeaveGradeForEvent(d.lecture.id, d.lecture)}" ajax="false" rendered="#{d.lecture.rendered}">Enter</p:commandLink></div>
+                            <div align="center"><p:inputText value="#{controler.leavegradefield}" rendered="#{d.lecture.rendered}"/></div>
+                        
+                            <div align="center"><p:commandLink action="#{controler.HoldPresentation(d.lecture)}" ajax="false" rendered="#{d.meauthor}">Hold a presentation</p:commandLink></div>
+                            
+                            <div align="center"><p:commandLink action="#{controler.UploadDocumentRender(d)}" ajax="false" rendered="#{d.meauthor}">Upload document</p:commandLink></div>
+                            <div align="center"><p:fileUpload value="#{controler.lectureUploadFile}" mode="simple" skinSimple="true" rendered="#{d.uploadrender}" allowTypes="/(\.|\/)(ppt|pdf)$/" /></div>
+                            <div align="center"><p:commandLink value="Upload" action="#{controler.LectureAddFileToDB(d)}" ajax="false" rendered="#{d.uploadrender}"/></div>
+                        </p:column>
+                        
+                        </p:dataTable>
+                        <br/>
+                        
+                         <!-- Pregled radionica-->
+                        <div align="center">Workshops</div> 
+                        <p:dataTable  var="d" value="#{controler.regularUserMyAgendaList.workshoplist}" >
+                        <br/>
+                        <p:column headerText="Workshop topic">
+                            <div align="center"><h:outputText value="#{d.topic}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Date">
+                            <div align="center"><h:outputText value="#{d.date}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Begin time">
+                            <div align="center"><h:outputText value="#{d.beginTime}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="End time">
+                            <div align="center"><h:outputText value="#{d.endTime}" /></div>
+                        </p:column>     
+                       
+                        <p:column headerText="Option">
+                            <div align="center"><i class="fa fa-thumbs-o-up" aria-hidden="true"><h:outputText value="&#160;" /><p:commandLink action="#{controler.LikeThisEvent(d.id, d.getAgenda().getId(), 'w')}" ajax="false" rendered="#{not controler.leavecommentrender}">Like</p:commandLink></i></div>  
+                            <div align="center"><i class="fa fa-comment-o" aria-hidden="true"><h:outputText value="&#160;" /><p:commandLink action="#{controler.LeaveCommentRender(null, d)}" ajax="false" rendered="#{not d.rendered}">Leave comment</p:commandLink></i></div>
+                            <div align="center"><p:commandLink  action="#{controler.LeaveCommentToEvent(d.id, d.getAgenda().getId(), 'w', null, d)}" ajax="false" rendered="#{d.rendered}">Enter</p:commandLink></div>
+                            <div align="center"><p:inputText value="#{controler.myagendacomment}" rendered="#{d.rendered}"/></div>
+                        
+                            <div align="center"><i class="fa fa-camera" aria-hidden="true"><h:outputText value="&#160;" /><p:commandLink value="Add image" action="#{controler.RegularUserAddEventImageWRender(d)}" ajax="false" rendered="#{not d.imgrendered}"/></i></div>
+                            <div align="center"><p:fileUpload value="#{controler.addWorkshopImageFile}" mode="simple" skinSimple="true" rendered="#{d.imgrendered}"/></div>
+                            <div align="center"><p:commandLink value="Upload" action="#{controler.RegularUserAddWorkshopImage('non',d)}" ajax="false" rendered="#{d.imgrendered}"/></div>
+                        
+                        </p:column>
+                        
+                        </p:dataTable>
+                        <br/>
+                        
+                        <!-- Pregled ceremonija otvaranja-->
+                       <div align="center">Open ceremonies</div> 
+                       <p:dataTable  var="d" value="#{controler.regularUserMyAgendaList.openceremonylist}" >
+                       <p:column headerText="Open ceremony">
+                            <div align="center"><h:outputText value="#{d.type}" /></div>
+                        </p:column>           
+                            
+                        <p:column headerText="Date">
+                            <div align="center"><h:outputText value="#{d.date}" /></div>
+                        </p:column>   
+                           
+                        <p:column headerText="Begin time">
+                            <div align="center"><h:outputText value="#{d.beginTime}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="End time">
+                            <div align="center"><h:outputText value="#{d.endTime}" /></div>
+                        </p:column>     
+                            
+                        <p:column headerText="Option">
+                        <div align="center"><i class="fa fa-camera" aria-hidden="true"><h:outputText value="&#160;" /><p:commandLink value="Add image" action="#{controler.RegularUserAddEventImageOCRender(d)}" ajax="false" rendered="#{not d.rendered}"/></i></div>
+                        <div align="center"><p:fileUpload value="#{controler.addOpenCeremonyImageFile}" mode="simple" skinSimple="true" rendered="#{d.rendered}"/></div>
+                        <div align="center"><p:commandLink value="Upload" action="#{controler.RegularUserAddOpenCeremonyImage('non',d)}" ajax="false" rendered="#{d.rendered}"/></div>
+                        </p:column>    
+                           
+                        </p:dataTable>
+                        <br/>
+                        
+                         <!-- Pregled ceremonija zatvaranja-->
+                        <div align="center">Close ceremonies</div>
+                        <p:dataTable  var="d" value="#{controler.regularUserMyAgendaList.closeceremonylist}" >
+                        <p:column headerText="Close ceremony">
+                            <div align="center"><h:outputText value="#{d.type}" /></div>
+                        </p:column>      
+                        
+                        <p:column headerText="Date">
+                            <div align="center"><h:outputText value="#{d.date}" /></div>
+                        </p:column>    
+                            
+                        <p:column headerText="Begin time">
+                            <div align="center"><h:outputText value="#{d.beginTime}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="End time">
+                            <div align="center"><h:outputText value="#{d.endTime}" /></div>
+                        </p:column>     
+                       
+                        <p:column headerText="Option">
+                             <div align="center"><i class="fa fa-camera" aria-hidden="true"><h:outputText value="&#160;" /><p:commandLink value="Add image" action="#{controler.RegularUserAddEventImageCCRender(d)}" ajax="false" rendered="#{not d.rendered}"/></i></div>
+                             <div align="center"><p:fileUpload value="#{controler.addCloseCeremonyImageFile}" mode="simple" skinSimple="true" rendered="#{d.rendered}"/></div>
+                             <div align="center"><p:commandLink value="Upload" action="#{controler.RegularUserAddCloseCeremonyImage('non',d)}" ajax="false" rendered="#{d.rendered}"/></div>
+                        </p:column>   
+                           
+                        </p:dataTable>
+                        
+                        
+                        
+                    </div>    
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

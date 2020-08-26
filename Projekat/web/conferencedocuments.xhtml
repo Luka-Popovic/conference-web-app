@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./templates/masterLayout.xhtml">
+
+            <ui:define name="content">
+                <h:form enctype="multipart/form-data">
+                    <div align="center">
+                      <div align="left"><p:commandLink value="previous page" action="regularusermyconferences" ajax="false"/></div>
+                      <div align="left"><p:commandLink value="main page" action="#{controler.gotoMainPageFromMyAgenda()}" ajax="false"/></div>  
+                      <div align="left"><p:commandLink value="Logout" action="#{controler.LogOut()}" ajax="false"/></div>
+                
+                      
+                      <div align="center">Files</div>   
+                        <p:dataTable  var="d" value="#{controler.lecturefileDownloadlist}" >
+                        <br/>
+                        <p:column headerText="Lecture name">
+                            <h:outputText value="#{d.lecture.name}" />
+                        </p:column>
+                        
+                        <p:column headerText="Begin time">
+                            <h:outputText value="#{d.lecture.startTime}" />
+                        </p:column>
+                        
+                        <p:column headerText="End time">
+                            <h:outputText value="#{d.lecture.endTime}" />
+                        </p:column>     
+                       
+                        <p:column headerText="Files to download">
+                            <p:dataTable var="c" value="#{d.lecturedocumentlist}" >
+                            <p:column>
+                                <div align="center">
+                                    <p:commandButton value="#{c.documentname}" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                        <p:fileDownload value="#{c.file}" />
+                                    </p:commandButton>
+                                </div>
+                            </p:column>     
+                            </p:dataTable>
+                        </p:column>     
+                        
+                        </p:dataTable>
+                
+                    </div>
+                </h:form>
+            
+<script type="text/javascript">
+function start() {
+    PF('statusDialog').show();
+}
+
+function stop() {
+    PF('statusDialog').hide();
+}
+</script>
+            
+            </ui:define>
+
+        </ui:composition>
+        
+    </body>
+</html>

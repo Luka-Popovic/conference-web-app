@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./templates/masterLayout.xhtml">
+
+            <ui:define name="content">
+       
+              <div align="center">  
+                    <h:form enctype="multipart/form-data" id="signinform">
+                     <span style="color:red">#{controler.signinporuka}</span>    
+                <p:panelGrid columns="2">
+                    <f:facet name="header">
+                    <p:row>
+            <p:column colspan="2">Registration form</p:column>
+                    </p:row>
+                    </f:facet>    
+                First Name:
+                <p:inputText value="#{controler.newUser.name}" required="#{param['signinform:signuplogout']==null}" />
+                Last Name:
+                <p:inputText value="#{controler.newUser.surname}" required="#{param['signinform:signuplogout']==null}" />    
+                Email Address:
+                <p:inputText value="#{controler.newUser.email}" required="#{param['signinform:signuplogout']==null}" />
+                Institution:
+                <p:inputText value="#{controler.newUser.institution}"/>
+                Username:
+                <p:inputText value="#{controler.newUser.username}"  required="#{param['signinform:signuplogout']==null}"/>
+                Password:
+                <p:inputText id="password" value="#{controler.newUser.password}" validatorMessage="Value does not match pattern">
+                <f:validateRegex pattern="^(?!.*?(.)\1{2})(?=.*[a-z].*[a-z].*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?])[A-Za-z0-9][A-Za-z\d$@$!%*?]{7,11}" />
+                <!-- OVO vratiti na kraju jer mi je sad lakse da radim sa manjim siframa
+                -->
+                </p:inputText>    
+                   
+                Confirm Password:
+                <p:inputText id="newpassword" value="#{controler.confirmpassword}" validatorMessage="Value does not match pattern" >
+                <f:validateRegex pattern="^(?!.*?(.)\1{2})(?=.*[a-z].*[a-z].*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?])[A-Za-z0-9][A-Za-z\d$@$!%*?]{7,11}" />
+                </p:inputText>    
+               
+                
+                Gender:
+                <p:selectOneMenu value="#{controler.newUser.gender}">
+                    <f:selectItem itemLabel="Select One" itemValue="non" />
+                    <f:selectItem itemLabel="Male" itemValue="male" />
+                    <f:selectItem itemLabel="Female" itemValue="female" />
+                    <f:selectItem itemLabel="Other" itemValue="other" />
+                </p:selectOneMenu>
+                
+                Profile picture:
+                <p:fileUpload value="#{controler.file}" mode="simple" required="true"/>
+                
+                Shirt size:
+                <p:selectOneMenu value="#{controler.newUser.shirtSize}">
+                    <f:selectItem itemLabel="Select One" itemValue="non" />
+                    <f:selectItem itemLabel="S" itemValue="S" />
+                    <f:selectItem itemLabel="M" itemValue="M" />
+                    <f:selectItem itemLabel="L" itemValue="L" />
+                    <f:selectItem itemLabel="XL" itemValue="XL" />
+                    <f:selectItem itemLabel="XXL" itemValue="XXL" />
+                </p:selectOneMenu>
+                
+                LinkedIn account:
+                <p:inputText value="#{controler.newUser.linkedin}"/>
+                  
+                </p:panelGrid>
+                     <p:commandButton id="signupbutton" value="Sign up" action="#{controler.SignIn()}" ajax="false" icon="fa fa-sign-in"/>
+                     <br/><br/><p:commandButton id="signuplogout" value="Logout" action="#{controler.LogOut()}" ajax="false" immediate="true" icon="fa fa-sign-out"/>
+                    
+                   
+                    </h:form>
+                   
+                </div>
+     
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

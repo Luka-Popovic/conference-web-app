@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./templates/masterLayout.xhtml">
+
+            <ui:define name="content">
+                <h:form>
+                    <div align="center">
+                        
+                        Welcome user: <h:outputText value="#{controler.user.username}" />
+                        <br/><br/>
+                        
+                        <p:commandLink  action="#{controler.RegularUserMyConferences()}" ajax="false">My conferences</p:commandLink>
+                        <br/><p:commandLink  action="#{controler.RegularUserMailbox()}" ajax="false">Mailbox</p:commandLink>
+                        <br/><p:commandLink value="Logout" action="#{controler.LogOut()}" />
+                        <br/><br/>    
+                        
+                        <span style="color:red">#{controler.emptydatetestmessage}</span>
+                        <p:panelGrid columns="2">
+                    <f:facet name="header">
+                    <p:row>
+            <p:column colspan="2">Search form</p:column>
+                    </p:row>
+                    </f:facet>    
+                Conference name:
+                <p:autoComplete id="acSimple" value="#{controler.searchNameregularuser}" completeMethod="#{controler.completeText}" />
+              
+                Location:
+                <p:selectOneMenu value="#{controler.searchLocationdregularuser}" >
+                <f:selectItem itemLabel="Select One" itemValue="" />
+                <f:selectItems value="#{controler.regularuserCityMap}" />
+                </p:selectOneMenu>
+                Begin date:
+                <p:calendar value="#{controler.searchDateBeginregularuser}" effect="fold" />  
+                End date:
+                <p:calendar value="#{controler.searchDateEndregularuser}" effect="fold" />  
+                Field:           
+                <p:selectOneMenu value="#{controler.searchFieldregularuser}">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="elektrotehnika i racunarsko inzenjerstvo" itemValue="elektrotehnika i racunarsko inzenjerstvo" />
+                            <f:selectItem itemLabel="arhitektura" itemValue="arhitektura" />
+                            <f:selectItem itemLabel="gradjevina i geodezija" itemValue="gradjevina i geodezija" />
+                            <f:selectItem itemLabel="masinstvo i industrijsko inzenjerstvo" itemValue="masinstvo i industrijsko inzenjerstvo" />
+                            <f:selectItem itemLabel="medicina" itemValue="medicina" />
+                            <f:selectItem itemLabel="fizicko-hemijske nauke" itemValue="fizicko-hemijske nauke" />
+                            <f:selectItem itemLabel="bioloske nauke" itemValue="bioloske nauke" />
+                            <f:selectItem itemLabel="zastita zivotne sredine" itemValue="zastita zivotne sredine" />
+                </p:selectOneMenu>
+                
+                
+                <f:facet name="footer">
+                <p:row>
+                    <p:column colspan="2"> 
+                        <div align="center"><p:commandButton id="button7" value="Search" action="#{controler.RegularUserSearchPage()}" ajax="false" icon="fa fa-search"/>
+                 <!--Ovo nesto zeza   <f:ajax event="click"  render="showsearchresults"  execute="button7"/>
+                            </p:commandButton>
+                 -->       
+                 </div>
+                        
+                    </p:column>
+                </p:row>       
+                </f:facet>        
+                        </p:panelGrid>    
+                    
+                    <br/><br/>
+                    
+                    <span style="color:red">#{controler.regularuserAddConferenceToMyAgendaMessage}</span>
+                    <br/><div align="right"><p:commandLink value="close" action="#{controler.RegularUserCloseTable()}" ajax="false" rendered="#{controler.regularusersearchrendered}" /></div>
+                    <p:dataTable  id="showsearchresults" var="d" value="#{controler.regularusersearchlist}" rendered="#{controler.regularusersearchrendered}">
+                        
+                        <p:column headerText="Name">
+                            <div align="center"><h:outputText value="#{d.name}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Field">
+                            <div align="center"><h:outputText value="#{d.field}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Begin date">
+                            <div align="center"><h:outputText value="#{d.beginDate}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="End date">
+                            <div align="center"><h:outputText value="#{d.endDate}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Country">
+                            <div align="center"><h:outputText value="#{d.country}" /></div>
+                        </p:column> 
+                       
+                        <p:column headerText="City">
+                            <div align="center"><h:outputText value="#{d.city}" /></div>
+                        </p:column>
+                       
+                        <p:column headerText="Place">
+                            <div align="center"><h:outputText value="#{d.place}" /></div>
+                        </p:column>
+                        
+                        <p:column headerText="Street">
+                            <div align="center"><h:outputText value="#{d.street}" /></div>
+                        </p:column>
+                            
+                       <p:column headerText="Register your attendance ">
+                           <div align="center"><p:commandButton value="Link" action="#{controler.regularUserEntryCodeRender(d)}" rendered="#{d.rendered}" ajax="false" /></div>
+                           <div align="center"><p:commandLink  action="#{controler.RegularUserAddToMyConferences(d)}" ajax="false" rendered="#{d.renderedforentrycode}">Register</p:commandLink></div>
+                           <div align="center"><p:inputText value="#{controler.entryCode}" rendered="#{d.renderedforentrycode}" /></div>
+                       </p:column>
+                        
+                    </p:dataTable>
+                    
+                    </div>
+                </h:form>
+              
+                
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

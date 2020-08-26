@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 6, 2017 9:30:03 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibernate.Agenda" table="agenda" catalog="projekat" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="conference" class="hibernate.Conference" fetch="select">
+            <column name="conferenceid" not-null="true" />
+        </many-to-one>
+        <property name="beginDate" type="date">
+            <column name="beginDate" length="10" not-null="true" />
+        </property>
+        <property name="endDate" type="date">
+            <column name="endDate" length="10" not-null="true" />
+        </property>
+        <set name="openceremonies" table="openceremony" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="agenda" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.Openceremony" />
+        </set>
+        <set name="myagendas" table="myagenda" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="agenda" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.Myagenda" />
+        </set>
+        <set name="sessionpauses" table="sessionpause" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="agenda" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.Sessionpause" />
+        </set>
+        <set name="sessionses" table="sessions" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="agenda" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.Sessions" />
+        </set>
+        <set name="closeceremonies" table="closeceremony" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="agenda" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.Closeceremony" />
+        </set>
+        <set name="workshops" table="workshop" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="agenda" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.Workshop" />
+        </set>
+    </class>
+</hibernate-mapping>

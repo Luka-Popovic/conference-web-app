@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 6, 2017 9:30:03 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibernate.Closeceremony" table="closeceremony" catalog="projekat" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="agenda" class="hibernate.Agenda" fetch="select">
+            <column name="agenda" not-null="true" />
+        </many-to-one>
+        <property name="date" type="date">
+            <column name="date" length="10" not-null="true" />
+        </property>
+        <property name="beginTime" type="time">
+            <column name="beginTime" length="8" not-null="true" />
+        </property>
+        <property name="endTime" type="time">
+            <column name="endTime" length="8" not-null="true" />
+        </property>
+        <property name="type" type="string">
+            <column name="type" length="50" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
